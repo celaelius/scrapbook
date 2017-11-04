@@ -1,12 +1,43 @@
+# **************************************
+#
+# Ubuntu 16.04 Guest, MacOS 10.12 Host
+#
+# **************************************
+
+# Preparation
 sudo apt-get update && sudo apt-get -y upgrade
 sudo apt-get install software-properties-common
+
+# Java 1.8
 sudo apt-add-repository ppa:webupd8team/java
-sudo apt-get update
 sudo apt install oracle-java8-installer
 
+# Maven (dont forget a default ~/.m2/settings.xml)
 sudo apt install maven
 
-ls /usr/share/mav*
-  
-vi settings.xml 
+# tools to allow workspace config (these tools work but I couldn't get 
+# control of the number/arrangement of workspaces, so I used the sowftware
+# installer to get CompizConfig tools and that worked). 
+sudo apt-get install unity-tweak-tool gnome-tweak-tool
+
+# prepare Guest Additions build (required for shared folders and bidirectional clipboard)
+sudo apt-get install build-essential dkms linux-headers-$(uname -r)
+sudo apt-get install virtualbox-guest-dkms
+sudo apt-get install module-assistant
+sudo m-a prepare
+
+# mounts are only visible to members of vboxsf
+sudo adduser jeffp vboxsf
+
+# assuming media is mounted (use Devices:Insert GA image from VB menu if not)
+sudo su -
+
+ cd /media/jeffp/VBox_GAs_5.2.01/
+ ./VBoxLinuxAdditions.run 
+ 
+# reapply GA (only if it breaks at some point after a release)
+
+cd /opt/VBoxGuestAdditions-5.2.0/init
+sudo ./vboxadd setup
+
 
